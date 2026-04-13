@@ -1,16 +1,24 @@
 'use client'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import Sidebar from '@/components/Sidebar'
+import MobileHeader from '@/components/MobileHeader'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   const router = useRouter()
+  const pathname = usePathname()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) router.push('/auth')
   }, [user, loading])
+
+  // Cerrar sidebar al cambiar de página en mobile
+  useEffect(() => {
+    setSidebarOpen(false)
+  }, [pathname])
 
   if (loading) {
     return (
@@ -21,10 +29,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <main className="flex-1 ml-60 p-6 lg:p-8">
-        {children}
+    <div className="min-h-screen bg-surface-50">
+      {/* Header mobile — solo visible en < lg */}
+      <MobileHeader onMenuClick={() => setSidebarOpen(true)} />
+
+      {/* Sidebar: fixed en ambos casos, en desktop siempre visible */}
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main: margen izquierdo solo en desktop para la sidebar fija */}
+      <main className="lg:ml-60 pt-14 lg:pt-0 min-h-screen">
+        <div className="p-4 sm:p-6 lg:p-8">
+          {children}
+        </div>
       </main>
     </div>
   )

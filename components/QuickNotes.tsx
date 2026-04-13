@@ -54,49 +54,52 @@ export default function QuickNotes() {
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addNote()}
           placeholder="Escribe una nota..."
-          className="flex-1 px-3 py-2 text-sm rounded-xl bg-surface-50 border border-surface-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
+          className="flex-1 min-w-0 px-3 py-2 text-sm rounded-xl bg-surface-50 border border-surface-200 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-all"
         />
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 flex-shrink-0">
           {COLORS.map((c) => (
             <button
               key={c}
               onClick={() => setColor(c)}
-              className={`w-5 h-5 rounded-full border-2 transition-all ${color === c ? 'border-accent scale-110' : 'border-transparent'}`}
+              className={`w-5 h-5 rounded-full border-2 transition-all flex-shrink-0 ${
+                color === c ? 'border-surface-800 scale-110' : 'border-transparent'
+              }`}
               style={{ backgroundColor: c }}
             />
           ))}
         </div>
         <button
           onClick={addNote}
-          className="p-2 bg-accent text-white rounded-xl hover:bg-accent-dark transition-all shadow-sm"
+          className="flex-shrink-0 w-9 h-9 bg-accent hover:bg-accent-dark text-white rounded-xl flex items-center justify-center transition-all shadow-sm"
         >
           <Plus size={16} />
         </button>
       </div>
 
-      {/* Notes grid */}
-      <div className="grid grid-cols-2 gap-2">
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className="group relative p-3 rounded-xl text-sm text-surface-800 transition-all"
-            style={{ backgroundColor: note.color }}
-          >
-            <p className="text-xs leading-relaxed break-words pr-4">{note.content}</p>
-            <button
-              onClick={() => deleteNote(note.id)}
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-surface-800/40 hover:text-red-400 transition-all"
+      {/* Notes grid — columnas responsivas que nunca se hacen demasiado angostas */}
+      {notes.length > 0 ? (
+        <div className="grid gap-2.5" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))' }}>
+          {notes.map((note) => (
+            <div
+              key={note.id}
+              className="group relative rounded-xl p-3 text-xs leading-relaxed text-surface-800 min-h-[80px] break-words"
+              style={{ backgroundColor: note.color }}
             >
-              <Trash2 size={12} />
-            </button>
-          </div>
-        ))}
-        {notes.length === 0 && (
-          <div className="col-span-2 text-xs text-surface-800/30 text-center py-4">
-            No hay notas aún
-          </div>
-        )}
-      </div>
+              {note.content}
+              <button
+                onClick={() => deleteNote(note.id)}
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-surface-800/30 hover:text-red-400 transition-all"
+              >
+                <Trash2 size={11} />
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-xs text-surface-800/30 text-center py-6">
+          Sin notas — escribe algo arriba ✍️
+        </p>
+      )}
     </div>
   )
 }
