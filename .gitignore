@@ -33,4 +33,11 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+<<<<<<< HEAD
 next-env.d.ts.next/
+=======
+next-env.d.ts
+
+.next.config.js
+.next
+>>>>>>> 47aeac38e642af41ab79103342254002b05f508e
