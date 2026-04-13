@@ -49,30 +49,27 @@ export default function TareasPage() {
     });
   }, [user?.id]);
 
-  async function connectClassroom() {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.provider_token;
+async function connectClassroom() {
+  const { data } = await supabase.auth.getSession()
+  const token = data.session?.provider_token
 
-    if (token) {
-      // Ya tiene token, solo sincronizar
-      await syncClassroom(token, user!.id);
-      loadTasks();
-    } else {
-      // No tiene token, hacer OAuth
-      await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          scopes:
-            "openid email profile https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.coursework.me.readonly https://www.googleapis.com/auth/classroom.student-submissions.me.readonly",
-          redirectTo: window.location.href,
-          queryParams: {
-            access_type: "offline",
-            prompt: "select_account consent",
-          },
+  if (token) {
+    await syncClassroom(token, user!.id)
+    loadTasks()
+  } else {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        scopes: 'openid email profile https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.coursework.me.readonly https://www.googleapis.com/auth/classroom.student-submissions.me.readonly',
+        redirectTo: `${window.location.origin}/dashboard/tareas`,  // ← cambia esto
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account consent',
         },
-      });
-    }
+      },
+    })
   }
+}
 
   async function loadTasks() {
     const { data } = await supabase
