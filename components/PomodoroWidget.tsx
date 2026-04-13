@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext'
 type Mode = 'focus' | 'break'
 
 const MODES: Record<Mode, number> = {
-  focus: 2 * 60,
+  focus: 25 * 60,
   break: 5 * 60,
 }
 
@@ -44,14 +44,48 @@ export default function PomodoroWidget() {
     return () => clearInterval(intervalRef.current!)
   }, [running])
 
-  async function saveSession() {
-    if (!user) return
-    await supabase.from('pomodoro_sessions').insert({
-      user_id: user.id,
-      duration_minutes: 1,
-      completed: true,
-    })
+async function saveSession() {
+  if (!user) return
+
+  // 1. Revisar si ya hubo un pomodoro completado HOY
+  const today = new Date().toISOString().split('T')[0] // "2026-04-12"
+  const { data: todaySessions } = await supabase
+    .from('pomodoro_sessions')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('session_date', today)
+    .eq('completed', true)
+
+  const esElPrimeroDeHoy = !todaySessions || todaySessions.length === 0
+
+  // 2. Guardar la sesión
+  await supabase.from('pomodoro_sessions').insert({
+    user_id: user.id,
+    duration_minutes: 25,
+    completed: true,
+    session_date: today,
+  })
+
+  // 3. Actualizar perfil
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('study_streak, total_pomodoros')
+    .eq('id', user.id)
+    .single()
+
+  if (profile) {
+    await supabase
+      .from('profiles')
+      .update({
+        total_pomodoros: profile.total_pomodoros + 1,
+        // La racha solo sube si es el primer pomodoro del día
+        study_streak: esElPrimeroDeHoy
+          ? profile.study_streak + 1
+          : profile.study_streak,
+      })
+      .eq('id', user.id)
   }
+}
 
   const switchMode = (m: Mode) => {
     setMode(m)
