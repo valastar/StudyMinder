@@ -1,4 +1,4 @@
-// File: /Users/user/Downloads/studyapp/app/layout.tsx
+// File: /Users/ivanmartinez/Desktop/Studyminder/StudyMinder/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

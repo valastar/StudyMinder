@@ -50,3 +50,15 @@ export type Note = {
   created_at: string
   updated_at: string
 }
+
+export type AudioTTS = {
+  id: string
+  user_id: string
+  title: string
+  text_content: string
+  voice: string
+  rate: number
+  loop_enabled: boolean
+  duration_estimate: number | null
+  created_at: string
+}
