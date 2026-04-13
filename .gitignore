@@ -1,0 +1,4 @@
+.env.local
+.env
+.env.production
+node_modules
