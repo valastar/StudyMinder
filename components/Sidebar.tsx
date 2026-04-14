@@ -2,18 +2,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  BookOpen, Timer, FileText, Mic, CheckSquare, Calendar, LogOut, User, X
+  BookOpen, Timer, FileText, Mic, CheckSquare, Calendar, LogOut, User, X, Crown
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import clsx from 'clsx'
 
 const NAV = [
-  { href: '/dashboard',            icon: BookOpen,    label: 'Inicio' },
-  { href: '/dashboard/pomodoro',   icon: Timer,       label: 'Pomodoro' },
-  { href: '/dashboard/apuntes',    icon: FileText,    label: 'Apuntes' },
-  { href: '/dashboard/audios',     icon: Mic,         label: 'Audios' },
-  { href: '/dashboard/tareas',     icon: CheckSquare, label: 'Tareas' },
-  { href: '/dashboard/calendario', icon: Calendar,    label: 'Calendario' },
+  { href: '/dashboard',                icon: BookOpen,    label: 'Inicio' },
+  { href: '/dashboard/pomodoro',       icon: Timer,       label: 'Pomodoro' },
+  { href: '/dashboard/apuntes',        icon: FileText,    label: 'Apuntes' },
+  { href: '/dashboard/audios',         icon: Mic,         label: 'Audios' },
+  { href: '/dashboard/tareas',         icon: CheckSquare, label: 'Tareas' },
+  { href: '/dashboard/calendario',     icon: Calendar,    label: 'Calendario' },
 ]
 
 interface SidebarProps {
@@ -39,9 +39,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={clsx(
-          // Base
           'fixed left-0 top-0 bottom-0 z-40 w-60 bg-white border-r border-surface-100 flex flex-col py-6 px-3 shadow-soft',
-          // Mobile: slide in/out
           'transition-transform duration-300 ease-in-out',
           'lg:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full'
@@ -77,6 +75,31 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               <span>{label}</span>
             </Link>
           ))}
+
+          {/* Separador */}
+          <div className="pt-2 pb-1">
+            <div className="border-t border-surface-100" />
+          </div>
+
+          {/* Membresías — destacado */}
+          <Link
+            href="/dashboard/membresias"
+            onClick={onClose}
+            className={clsx(
+              'sidebar-link',
+              pathname === '/dashboard/membresias'
+                ? 'active'
+                : 'text-accent/80 hover:text-accent hover:bg-accent/8'
+            )}
+          >
+            <Crown size={17} />
+            <span>Membresías</span>
+            {pathname !== '/dashboard/membresias' && (
+              <span className="ml-auto text-[9px] font-bold bg-accent text-white px-1.5 py-0.5 rounded-full uppercase tracking-wide">
+                Pro
+              </span>
+            )}
+          </Link>
         </nav>
 
         {/* Usuario */}
