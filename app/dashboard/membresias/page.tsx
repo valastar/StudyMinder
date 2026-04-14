@@ -99,7 +99,7 @@ export default function MembresiasPage() {
               Para estudiantes serios que quieren dominar su rendimiento.
             </p>
             <div className="flex items-end gap-1.5 mb-5">
-              <span className="font-display text-4xl text-surface-900">$99</span>
+              <span className="font-display text-4xl text-surface-900">$50</span>
               <span className="text-xs text-surface-800/40 mb-1.5 font-medium">al mes</span>
             </div>
             <button

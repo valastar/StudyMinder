@@ -96,7 +96,7 @@ export default function PaymentModal({ onClose, onConfirm }: PaymentModalProps) 
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-surface-900">Studyminder Pro</p>
-                  <p className="text-[10px] text-surface-800/40">$99 MXN / mes</p>
+                  <p className="text-[10px] text-surface-800/40">$50 MXN / mes</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -158,15 +158,15 @@ export default function PaymentModal({ onClose, onConfirm }: PaymentModalProps) 
               <div className="bg-surface-50 border border-surface-100 rounded-xl p-3 mb-5 space-y-1.5">
                 <div className="flex justify-between text-sm">
                   <span className="text-surface-800/60">Plan Pro mensual</span>
-                  <span className="font-medium">$99.00</span>
+                  <span className="font-medium">$50.00</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-surface-800/60">IVA (16%)</span>
-                  <span className="font-medium">$15.84</span>
+                  <span className="font-medium">$8.00</span>
                 </div>
                 <div className="border-t border-surface-200 pt-1.5 flex justify-between text-sm font-bold">
                   <span>Total hoy</span>
-                  <span className="text-accent">$114.84 MXN</span>
+                  <span className="text-accent">$58.00 MXN</span>
                 </div>
               </div>
 
